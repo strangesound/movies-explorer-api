@@ -1,4 +1,6 @@
 const express = require('express');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -12,7 +14,13 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { PORT = 3000 } = process.env;
 const app = express();
-
+app.use(helmet());
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100,
+});
+//  apply to all requests
+app.use(limiter);
 app.use(bodyParser.json());
 
 mongoose.connect('mongodb://localhost:27017/moviesdb', {
@@ -22,6 +30,7 @@ mongoose.connect('mongodb://localhost:27017/moviesdb', {
   useUnifiedTopology: true,
   autoIndex: true,
 });
+
 app.use(requestLogger); // подключаем логгер запросов
 
 app.use(cors());

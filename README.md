@@ -4,3 +4,4 @@
 
 ### Адрес апи сервера:
 http://api.arseny-movies.nomoredomains.club/
+https://api.arseny-movies.nomoredomains.club/

@@ -18,21 +18,71 @@ module.exports.getMovies = (req, res, next) => {
     });
 };
 
+// module.exports.deleteMovie = (req, res, next) => {
+//   // const { movieId } = req.params;
+//   console.log('параметры запроса', req);
+//   return Movie.findOne({ movieId: req.params.movieId })
+//     .then((movie) => {
+//       console.log('найденный фильм', movie);
+//       if (!movie) {
+//         next(new NotFound404('Нет такого фильма'));
+//       } else if (!movie.owner.equals(req.user._id)) {
+//         next(new NotYourMovieError403('Нельзя удалять чужие фильмы'));
+//       } else {
+//         Movie.findByIdAndRemove(movie._id, { new: true, runValidators: true })
+//           .then((movie2) => {
+//             if (movie2) {
+//               res.send(JSON.parse('{"movieDelete":"Фильм удален!"}'));
+//             } else {
+//               next(new NotFound404('Нет такого фильма'));
+//             }
+//           })
+//           .catch((err) => {
+//             next(err);
+//           });
+//       }
+//     });
+// };
+// module.exports.deleteMovie = (req, res, next) => {
+//   // const { movieId } = req.params;
+//   console.log('параметры запроса', req);
+//   return Movie.findOne({ movieId: req.params.movieId })
+//     .then((movie) => {
+//       console.log('найденный фильм', movie);
+//       if (!movie) {
+//         next(new NotFound404('Нет такого фильма'));
+//       } else if (!movie.owner.equals(req.user._id)) {
+//         next(new NotYourMovieError403('Нельзя удалять чужие фильмы'));
+//       } else {
+//         Movie.findByIdAndRemove(movie._id, { new: true, runValidators: true })
+//           .then((movie2) => {
+//             if (movie2) {
+//               res.send(JSON.parse('{"movieDelete":"Фильм удален!"}'));
+//             } else {
+//               next(new NotFound404('Нет такого фильма'));
+//             }
+//           })
+//           .catch((err) => {
+//             next(err);
+//           });
+//       }
+//     });
+// };
+
 module.exports.deleteMovie = (req, res, next) => {
-  // const { movieId } = req.params;
-  console.log('параметры запроса', req);
-  return Movie.findOne({ movieId: req.params.movieId })
+  const { movieId } = req.params;
+  console.log('movieId', movieId);
+  return Movie.findById(movieId)
     .then((movie) => {
-      console.log('найденный фильм', movie);
       if (!movie) {
         next(new NotFound404('Нет такого фильма'));
       } else if (!movie.owner.equals(req.user._id)) {
         next(new NotYourMovieError403('Нельзя удалять чужие фильмы'));
       } else {
-        Movie.findByIdAndRemove(movie._id, { new: true, runValidators: true })
-          .then((movie2) => {
-            if (movie2) {
-              res.send(JSON.parse('{"movieDelete":"Фильм удален!"}'));
+        movie.remove(movieId)
+          .then((card2) => {
+            if (card2) {
+              res.send(JSON.parse('{"cardDelete":"Фильм удален!"}'));
             } else {
               next(new NotFound404('Нет такого фильма'));
             }

@@ -56,10 +56,10 @@ module.exports.createUser = (req, res, next) => {
 
 // update user
 module.exports.updateUser = (req, res, next) => {
-  const { name } = req.body;
+  const { name, email } = req.body;
   User.findByIdAndUpdate(
     req.user._id,
-    { name },
+    { name, email },
     { new: true, runValidators: true },
   ).orFail(() => {
     next(new NotFound404('Не получилось обновить данные'));

@@ -16,14 +16,14 @@ module.exports.validateMovie = celebrate({
     authorization: Joi.string().min(2).max(200),
   }).unknown(true),
   body: Joi.object().keys({
-    country: Joi.string(),
-    director: Joi.string(),
-    duration: Joi.string(),
-    description: Joi.string(),
-    nameRU: Joi.string(),
-    nameEN: Joi.string(),
-    year: Joi.number(),
-    movieId: Joi.string(),
+    country: Joi.string().required(),
+    director: Joi.string().required(),
+    duration: Joi.string().required(),
+    description: Joi.string().required(),
+    nameRU: Joi.string().required(),
+    nameEN: Joi.string().required(),
+    year: Joi.number().required(),
+    movieId: Joi.number().required(),
     trailer: Joi.string().required().custom((value, helpers) => {
       if (validator.isURL(value)) {
         return value;
@@ -115,7 +115,8 @@ module.exports.validateNameAbout = celebrate({
     authorization: Joi.string().min(2).max(200),
   }).unknown(true),
   body: Joi.object().keys({
-    name: Joi.string().min(2).max(30).required(),
+    name: Joi.string().min(2).max(30),
+    email: Joi.string().email(),
     // about: Joi.string().min(2).max(30).required(),
   }).unknown(true),
 
